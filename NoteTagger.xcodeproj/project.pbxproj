@@ -6,8 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E4EE37152FE5A0FB003E8F52 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = E4EE37142FE5A0FB003E8F52 /* .swiftlint.yml */; };
+		E4EE37172FE5A3CD003E8F52 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E4EE37162FE5A3CD003E8F52 /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		E47B99832FE3116700C591C5 /* NoteTagger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteTagger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4EE37142FE5A0FB003E8F52 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		E4EE37162FE5A3CD003E8F52 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -34,6 +41,8 @@
 			children = (
 				E47B99852FE3116700C591C5 /* NoteTagger */,
 				E47B99842FE3116700C591C5 /* Products */,
+				E4EE37142FE5A0FB003E8F52 /* .swiftlint.yml */,
+				E4EE37162FE5A3CD003E8F52 /* .gitignore */,
 			);
 			sourceTree = "<group>";
 		};
@@ -53,6 +62,7 @@
 			buildConfigurationList = E47B998E2FE3116900C591C5 /* Build configuration list for PBXNativeTarget "NoteTagger" */;
 			buildPhases = (
 				E47B997F2FE3116700C591C5 /* Sources */,
+				E4E640FA2FE59F8700481A6F /* Linter */,
 				E47B99802FE3116700C591C5 /* Frameworks */,
 				E47B99812FE3116700C591C5 /* Resources */,
 			);
@@ -109,10 +119,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4EE37172FE5A3CD003E8F52 /* .gitignore in Resources */,
+				E4EE37152FE5A0FB003E8F52 /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E4E640FA2FE59F8700481A6F /* Linter */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Linter;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/zsh\n\n# 1. Set PATH for Homebrew (critical for Xcode sandbox)\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:$PATH\"\n\n# 2. Debug output (visible in Xcode logs)\necho \"=== SwiftLint Debug ===\"\necho \"Config path: ${SRCROOT}/.swiftlint.yml\"\necho \"SwiftLint path: $(which swiftlint)\"\necho \"SwiftLint version: $(swiftlint --version)\"\n\n# 3. Run with absolute paths\n/opt/homebrew/bin/swiftlint lint \\\n  --config \"${SRCROOT}/.swiftlint.yml\" \\\n  --cache-path \"${SRCROOT}/DerivedData/SwiftLintCache\" \\\n  || echo \"SwiftLint completed with warnings\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E47B997F2FE3116700C591C5 /* Sources */ = {
@@ -185,6 +219,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -242,6 +277,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -249,13 +285,16 @@
 		E47B998F2FE3116900C591C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = NoteTaggerIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TY6W6JY45R;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs microphone access to record meetings and lectures.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -281,13 +320,16 @@
 		E47B99902FE3116900C591C5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = NoteTaggerIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TY6W6JY45R;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs microphone access to record meetings and lectures.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
