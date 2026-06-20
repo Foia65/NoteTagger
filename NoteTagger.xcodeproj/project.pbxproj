@@ -62,6 +62,7 @@
 			buildConfigurationList = E47B998E2FE3116900C591C5 /* Build configuration list for PBXNativeTarget "NoteTagger" */;
 			buildPhases = (
 				E47B997F2FE3116700C591C5 /* Sources */,
+				E4EE37182FE5A5ED003E8F52 /* auto build increase */,
 				E4E640FA2FE59F8700481A6F /* Linter */,
 				E47B99802FE3116700C591C5 /* Frameworks */,
 				E47B99812FE3116700C591C5 /* Resources */,
@@ -145,6 +146,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/zsh\n\n# 1. Set PATH for Homebrew (critical for Xcode sandbox)\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:$PATH\"\n\n# 2. Debug output (visible in Xcode logs)\necho \"=== SwiftLint Debug ===\"\necho \"Config path: ${SRCROOT}/.swiftlint.yml\"\necho \"SwiftLint path: $(which swiftlint)\"\necho \"SwiftLint version: $(swiftlint --version)\"\n\n# 3. Run with absolute paths\n/opt/homebrew/bin/swiftlint lint \\\n  --config \"${SRCROOT}/.swiftlint.yml\" \\\n  --cache-path \"${SRCROOT}/DerivedData/SwiftLintCache\" \\\n  || echo \"SwiftLint completed with warnings\"\n";
+		};
+		E4EE37182FE5A5ED003E8F52 /* auto build increase */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "auto build increase";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#!/bin/bash\n\n# This script automatically increments the build number (CFBundleVersion)\n# by using agvtool, which updates the 'CURRENT_PROJECT_VERSION' build setting.\n# This approach works correctly when 'Generate Info.plist File' is set to YES.\n\n# --- IMPORTANT Xcode Configuration ---\n# Ensure your project's build settings have:\n# 1. Versioning System: 'Apple-Generic' (under Build Settings -> Versioning)\n# 2. Current Project Version: (e.g., '1' or your desired starting build number)\n\nif [ \"$XCODE_RUNNING_FOR_PREVIEWS\" = \"1\" ]; then\n  echo \"Skipping for SwiftUI previews\"\n  exit 0\nfi\n\nif [ \"$EFFECTIVE_PLATFORM_NAME\" = \"-iphonesimulator\" ]; then\n  echo \"Skipping simulator build\"\n  exit 0\nfi\n\n\necho \"--- Incrementing Build Number using agvtool ---\"\n\n# Get current build number (CURRENT_PROJECT_VERSION) using agvtool\n# The '-terse' flag returns just the number.\ncurrent_build_number=$(agvtool what-version -terse 2>/dev/null)\n\n# Check if agvtool successfully retrieved the version\nif [ -z \"$current_build_number\" ]; then\n    echo \"Error: agvtool could not determine the current project version.\"\n    echo \"Please ensure 'Versioning System' is set to 'Apple-Generic' and 'Current Project Version' is a valid number in your target's Build Settings.\"\n    exit 1\nfi\n\necho \"Current build number (CURRENT_PROJECT_VERSION): ${current_build_number}\"\n\n# Increment the build number to the next version using agvtool\n# The '-all' flag updates all targets that use this versioning.\nagvtool next-version -all\n\n# Verify the new build number after incrementing\nnew_build_number=$(agvtool what-version -terse 2>/dev/null)\n\necho \"New build number (CURRENT_PROJECT_VERSION): ${new_build_number}\"\n\nif [ \"$new_build_number\" == \"$current_build_number\" ]; then\n    echo \"Warning: Build number did not increment. Check agvtool output for errors or if versioning is set up correctly.\"\nfi\n\necho \"--- Build Number Increment Complete ---\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -289,7 +309,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = TY6W6JY45R;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -298,8 +318,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -324,7 +344,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = TY6W6JY45R;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -333,8 +353,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

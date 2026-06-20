@@ -1,11 +1,58 @@
 import SwiftUI
 
+private enum SortOption: String, CaseIterable, Identifiable {
+    case date, title, duration, size, bookmarks
+
+    var id: Self { self }
+
+    var label: String {
+        switch self {
+        case .date: return String(localized: "sort_date")
+        case .title: return String(localized: "sort_title")
+        case .duration: return String(localized: "sort_duration")
+        case .size: return String(localized: "sort_size")
+        case .bookmarks: return String(localized: "sort_bookmarks")
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .date: return "calendar"
+        case .title: return "textformat.abc"
+        case .duration: return "clock"
+        case .size: return "doc"
+        case .bookmarks: return "bookmark.fill"
+        }
+    }
+}
+
 struct RecordingsListView: View {
     @EnvironmentObject var recorder: AudioRecorderManager
     @State private var editingRecordingID: UUID?
     @State private var editingTitle = ""
     @State private var showRenameAlert = false
     @State private var renameRecording: Recording?
+    @State private var sortOption: SortOption = .date
+    @State private var sortAscending = false
+
+    private var sortedRecordings: [Recording] {
+        recorder.recordings.sorted { a, b in
+            let result: Bool
+            switch sortOption {
+            case .date:
+                result = a.createdAt < b.createdAt
+            case .title:
+                result = a.title.localizedStandardCompare(b.title) == .orderedAscending
+            case .duration:
+                result = a.duration < b.duration
+            case .size:
+                result = a.fileSize < b.fileSize
+            case .bookmarks:
+                result = a.bookmarks.count < b.bookmarks.count
+            }
+            return sortAscending ? result : !result
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -21,7 +68,7 @@ struct RecordingsListView: View {
                         )
                     } else {
                         List {
-                            ForEach(recorder.recordings) { recording in
+                            ForEach(sortedRecordings) { recording in
                                 NavigationLink(value: recording) {
                                     RecordingRowView(
                                         recording: recording,
@@ -93,6 +140,32 @@ struct RecordingsListView: View {
             }
             .navigationTitle(String(localized: "recordings_title"))
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Picker(String(localized: "sort_by"), selection: $sortOption) {
+                            ForEach(SortOption.allCases) { option in
+                                Label(option.label, systemImage: option.systemImage).tag(option)
+                            }
+                        }
+
+                        Divider()
+
+                        Button {
+                            sortAscending.toggle()
+                        } label: {
+                            if sortAscending {
+                                Label(String(localized: "sort_ascending"), systemImage: "arrow.up")
+                            } else {
+                                Label(String(localized: "sort_descending"), systemImage: "arrow.down")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "arrow.up.arrow.down")
+                            .imageScale(.large)
+                    }
+                }
+            }
             .navigationDestination(for: Recording.self) { recording in
                 PlaybackView(recording: recording)
                     .environmentObject(recorder)

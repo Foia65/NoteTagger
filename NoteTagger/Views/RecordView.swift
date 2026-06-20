@@ -16,10 +16,11 @@ struct RecordView: View {
                     if recorder.state == .recording {
                         RecordingTimerView(currentTime: recorder.currentTime)
                     } else {
-                        Image(systemName: "mic.circle")
-                            .resizable()
+                       // Image(systemName: "mic.circle")
+                        Image("pro_microphone")
+                        .resizable()
                             .scaledToFit()
-                            .frame(width: 120, height: 120)
+                            .frame(width: 200, height: 200)
                             .foregroundStyle(Color.darkSecondary)
                     }
 
@@ -147,7 +148,13 @@ struct RecordingTimerView: View {
     }
 }
 
-#Preview {
+#Preview("Timer") {
     RecordingTimerView(currentTime: 252)
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Record") {
+    RecordView()
+        .environmentObject(AudioRecorderManager())
         .preferredColorScheme(.dark)
 }
