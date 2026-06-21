@@ -16,9 +16,8 @@ struct RecordView: View {
                     if recorder.state == .recording {
                         RecordingTimerView(currentTime: recorder.currentTime)
                     } else {
-                       // Image(systemName: "mic.circle")
                         Image("pro_microphone")
-                        .resizable()
+                            .resizable()
                             .scaledToFit()
                             .frame(width: 200, height: 200)
                             .foregroundStyle(Color.darkSecondary)
@@ -33,7 +32,7 @@ struct RecordView: View {
                                 VStack(spacing: 8) {
                                     Image(systemName: "bookmark.fill")
                                         .font(.system(size: 40))
-                                    Text(String(localized: "button_tag"))
+                                    Text("button_tag")
                                         .font(.headline)
                                 }
                                 .frame(maxWidth: .infinity)
@@ -50,7 +49,7 @@ struct RecordView: View {
                                 VStack(spacing: 8) {
                                     Image(systemName: "stop.fill")
                                         .font(.system(size: 40))
-                                    Text(String(localized: "button_stop"))
+                                    Text("button_stop")
                                         .font(.headline)
                                 }
                                 .frame(maxWidth: .infinity)
@@ -71,7 +70,7 @@ struct RecordView: View {
                             VStack(spacing: 12) {
                                 Image(systemName: "record.circle.fill")
                                     .font(.system(size: 60))
-                                Text(String(localized: "button_record"))
+                                Text("button_record")
                                     .font(.title2.bold())
                             }
                             .frame(maxWidth: .infinity)
@@ -87,22 +86,21 @@ struct RecordView: View {
                     Spacer()
                 }
             }
-          //  .navigationTitle(String(localized: "record_title"))
             .navigationBarTitleDisplayMode(.large)
-            .alert(String(localized: "tag_alert_title"), isPresented: $showTagSheet) {
-                TextField(String(localized: "tag_placeholder"), text: $tagText)
-                Button(String(localized: "tag_save")) {
+            .alert("tag_alert_title", isPresented: $showTagSheet) {
+                TextField("tag_placeholder", text: $tagText)
+                Button("tag_save") {
                     recorder.addBookmark(title: tagText)
                 }
-                Button(String(localized: "tag_cancel"), role: .cancel) {}
+                Button("tag_cancel", role: .cancel) {}
             } message: {
-                Text(String(localized: "tag_alert_message"))
+                Text("tag_alert_message")
             }
-            .alert(String(localized: "error_title"), isPresented: .init(
+            .alert("error_title", isPresented: .init(
                 get: { recorder.errorMessage != nil },
                 set: { if !$0 { recorder.errorMessage = nil } }
             )) {
-                Button(String(localized: "ok"), role: .cancel) {}
+                Button("ok", role: .cancel) {}
             } message: {
                 if let error = recorder.errorMessage {
                     Text(error)
@@ -129,7 +127,7 @@ struct RecordingTimerView: View {
                     .frame(width: 12, height: 12)
                     .opacity(0.8)
                     .animation(.easeInOut(duration: 0.8).repeatForever(), value: currentTime)
-                Text(String(localized: "recording_in_progress"))
+                Text("recording_in_progress")
                     .font(.subheadline)
                     .foregroundStyle(Color.darkSecondary)
             }

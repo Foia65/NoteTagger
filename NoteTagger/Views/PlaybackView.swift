@@ -57,9 +57,9 @@ struct PlaybackView: View {
                 } else {
                     Spacer()
                     ContentUnavailableView(
-                        String(localized: "empty_bookmarks_title"),
+                        "empty_bookmarks_title",
                         systemImage: "bookmark",
-                        description: Text(String(localized: "empty_bookmarks_description"))
+                        description: Text("empty_bookmarks_description")
                     )
                     Spacer()
                 }
@@ -188,7 +188,7 @@ struct BookmarksListView: View {
     var body: some View {
         List {
             Section(
-                header: Text(String(localized: "bookmarks_header"))
+                header: Text("bookmarks_header")
                     .foregroundStyle(Color.darkSecondary)
             ) {
                 ForEach(bookmarks.sorted(by: { $0.timestamp < $1.timestamp })) { bookmark in
@@ -233,12 +233,12 @@ struct BookmarkRowView: View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
                 if isEditing {
-                    TextField(String(localized: "tag_placeholder"), text: $editingTitle)
+                    TextField("tag_placeholder", text: $editingTitle)
                         .textFieldStyle(.roundedBorder)
                         .colorScheme(.dark)
                         .onSubmit { onCommitEdit() }
                 } else {
-                    Text(bookmark.title.isEmpty ? String(localized: "untitled_bookmark") : bookmark.title)
+                    Text(bookmark.title.isEmpty ? "untitled_bookmark" : bookmark.title)
                         .font(.body)
                         .foregroundStyle(.white)
                 }

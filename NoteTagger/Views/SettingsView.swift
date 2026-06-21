@@ -6,15 +6,12 @@ import StoreKit
 
 /// Manages the app's language preference and provides a `Locale` for SwiftUI.
 class LanguageManager: ObservableObject {
-    // Saves the language identifier (e.g. "it", "en") to UserDefaults
     @AppStorage("selected_language") var selectedLanguage: String = "en" {
         didSet {
-            // Notify views of changes
             objectWillChange.send()
         }
     }
 
-    // Converts the string to a Locale object usable by SwiftUI
     var currentLocale: Locale {
         Locale(identifier: selectedLanguage)
     }
@@ -24,38 +21,22 @@ class LanguageManager: ObservableObject {
 //
 // App settings view: language, theme, measurement system, runner profile, and legal links.
 struct SettingsView: View {
-//    @EnvironmentObject var storeKitManager: StoreKitManager
     @EnvironmentObject var languageManager: LanguageManager
     @AppStorage("isPremiumUser") private var isPremiumUser = false
 
-    // Supported languages
-    let languages = [
+    let languages: [(String, String)] = [
         ("Italiano", "it"),
         ("English", "en")
     ]
 
     var body: some View {
         List {
-            Section(header: HStack { Text("Informazioni e supporto").font(.title3) }.padding(.top, 20)) {
+            Section(header: HStack { Text("settings_info_support").font(.title3) }.padding(.top, 20)) {
 
-                // 1 - Method basics
                 NavigationLink(destination: Segnaposto()) {
                     Label {
-                        Text("Le basi del metodo")
+                        Text("settings_help")
                             .foregroundColor(.primary)
-                    } icon: {
-                        Image(systemName: "info.circle")
-                            .foregroundColor(.secondary)
-                            .font(.footnote)
-                    }
-                }
-
-                // 2 - Help
-                NavigationLink(destination: Segnaposto()) {
-                    Label {
-                        Text("Guida")
-                            .foregroundColor(.primary)
-
                     } icon: {
                         Image(systemName: "questionmark.circle")
                             .foregroundColor(.secondary)
@@ -63,14 +44,13 @@ struct SettingsView: View {
                     }
                 }
 
-                // 3 - Support
                 Button {
                     if let url = URL(string: "mailto:info.foiasoft@gmail.com") {
                         UIApplication.shared.open(url)
                     }
                 } label: {
                     Label {
-                        Text("Contatta il supporto")
+                        Text("settings_contact_support")
                             .foregroundColor(.primary)
                     } icon: {
                         Image(systemName: "envelope")
@@ -79,10 +59,9 @@ struct SettingsView: View {
                     }
                 }
 
-                // 4 - App version
                 HStack {
                     Label {
-                        Text("Versione: ")
+                        Text("settings_version")
                             .foregroundColor(.primary)
                     } icon: {
                         Image(systemName: "shippingbox")
@@ -93,16 +72,14 @@ struct SettingsView: View {
                     Text("\(Bundle.main.appVersionDisplay) (\(Bundle.main.appBuild))")
                         .font(.system(.subheadline, design: .rounded, weight: .regular))
                         .foregroundColor(.secondary)
-
                 }
             }
 
-             Section(header: Text("Account").font(.title3)) {
+            Section(header: Text("settings_account").font(.title3)) {
 
-                // 1 - Product level
                 HStack {
                     Label {
-                        Text("Livello Prodotto:")
+                        Text("settings_product_level")
                     } icon: {
                         Image(systemName: "person.badge.shield.checkmark")
                             .foregroundColor(.secondary)
@@ -116,94 +93,88 @@ struct SettingsView: View {
                             Image(systemName: "crown.fill")
                                 .font(.footnote)
                                 .foregroundColor(.yellow)
-                            Text("Premium")
+                            Text("settings_premium")
                                 .font(.system(.subheadline, design: .rounded, weight: .regular))
                                 .foregroundColor(.secondary)
                         }
                     } else {
-                        Text("Base (gratuito)")
+                        Text("settings_base_free")
                             .font(.system(.subheadline, design: .rounded, weight: .regular))
                             .foregroundColor(.secondary)
                     }
                 }
 
-                // 2 - View premium offer-
                 if !isPremiumUser {
                     NavigationLink(destination: Segnaposto()) {
                         Label {
-                            Text("Visualizza l'offerta premium")
+                            Text("settings_view_premium_offer")
                         } icon: {
                             Image(systemName: "crown")
-                            .font(.footnote)
-                        .foregroundColor(.secondary)}
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
 
-                // 3 - restore purchase
                 if !isPremiumUser {
                     Button {
                         Task {
-  //                          await storeKitManager.restorePurchases()
                         }
                     } label: {
                         Label {
-                            Text("Ripristina l'acquisto")
+                            Text("settings_restore_purchase")
                                 .foregroundColor(.primary)
                         } icon: {
                             Image(systemName: "icloud.and.arrow.down")
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
                         }
                     }
                 }
 
-                // 4 - Rate this App
-                 Button {
+                Button {
                     requestAppReview()
-
                 } label: {
                     Label {
-                        Text("Valuta questa App")
+                        Text("settings_rate_app")
                             .foregroundColor(.primary)
                     } icon: {
                         Image(systemName: "star")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
                     }
                 }
             }
 
-            Section(header: Text("Preferenze").font(.title3)) {
+            Section(header: Text("settings_preferences").font(.title3)) {
 
-
-                // 4 - Language
                 HStack {
                     Label {
-                        Text("Lingua")
+                        Text("settings_language")
                             .foregroundStyle(.primary)
                             .lineLimit(1)
                             .layoutPriority(1)
                     } icon: {
                         Image(systemName: "globe")
-                        .foregroundColor(.secondary)
-                        .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .font(.footnote)
                     }
                     Spacer()
                     Picker("", selection: $languageManager.selectedLanguage) {
                         ForEach(languages, id: \.1) { name, code in
-                            Text(name).tag(code)
+                            Text(LocalizedStringKey(name)).tag(code)
                         }
                     }
                     .font(.system(.subheadline, design: .rounded, weight: .regular))
-                     .pickerStyle(.navigationLink)
-                 }
+                    .pickerStyle(.navigationLink)
+                }
             }
 
-            Section(header: Text("Privacy e Sicurezza").font(.title3)) {
+            Section(header: Text("settings_privacy_security").font(.title3)) {
 
                 NavigationLink(destination: Segnaposto()) {
                     Label {
-                        Text("Informativa Privacy")
+                        Text("settings_privacy_policy")
                     } icon: {
                         Image(systemName: "hand.raised.fill")
                             .foregroundColor(.secondary)
@@ -213,36 +184,31 @@ struct SettingsView: View {
 
                 NavigationLink(destination: Segnaposto()) {
                     Label {
-                        Text("Termini di utilizzo")
+                        Text("settings_terms_of_service")
                     } icon: {
                         Image(systemName: "doc.text")
                             .foregroundColor(.secondary)
                             .font(.footnote)
                     }
                 }
-
             }
 
 #if DEBUG
-            Section(header: Text("Debug").font(.title3)) {
+            Section(header: Text("settings_debug").font(.title3)) {
 
-                // to play with premium status
                 Toggle(isOn: $isPremiumUser) {
-                    Label("Premium User", systemImage: "crown")
+                    Label("settings_premium_user", systemImage: "crown")
                 }
                 .foregroundStyle(.blue)
             }
-
 #endif
 
         }
         .font(.system(.subheadline, design: .default, weight: .semibold))
         .environment(\.defaultMinListRowHeight, 28)
-
     }
 }
 
-// Convenience accessors for app version and build information.
 extension Bundle {
     var appVersionDisplay: String {
         infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"

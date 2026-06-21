@@ -5,16 +5,6 @@ private enum SortOption: String, CaseIterable, Identifiable {
 
     var id: Self { self }
 
-    var label: String {
-        switch self {
-        case .date: return String(localized: "sort_date")
-        case .title: return String(localized: "sort_title")
-        case .duration: return String(localized: "sort_duration")
-        case .size: return String(localized: "sort_size")
-        case .bookmarks: return String(localized: "sort_bookmarks")
-        }
-    }
-
     var systemImage: String {
         switch self {
         case .date: return "calendar"
@@ -62,9 +52,9 @@ struct RecordingsListView: View {
                 Group {
                     if recorder.recordings.isEmpty {
                         ContentUnavailableView(
-                            String(localized: "empty_recordings_title"),
+                            "empty_recordings_title",
                             systemImage: "waveform",
-                            description: Text(String(localized: "empty_recordings_description"))
+                            description: Text("empty_recordings_description")
                         )
                     } else {
                         List {
@@ -89,7 +79,7 @@ struct RecordingsListView: View {
                                     Button {
                                         ShareCoordinator.shareRecording(recording)
                                     } label: {
-                                        Label(String(localized: "action_share"), systemImage: "square.and.arrow.up")
+                                        Label("action_share", systemImage: "square.and.arrow.up")
                                     }
                                     .tint(.accentVivid)
 
@@ -98,7 +88,7 @@ struct RecordingsListView: View {
                                         editingTitle = recording.title
                                         showRenameAlert = true
                                     } label: {
-                                        Label(String(localized: "action_rename"), systemImage: "pencil")
+                                        Label("action_rename", systemImage: "pencil")
                                     }
                                     .tint(.indigo)
                                 }
@@ -106,14 +96,14 @@ struct RecordingsListView: View {
                                     Button(role: .destructive) {
                                         recorder.deleteRecording(recording)
                                     } label: {
-                                        Label(String(localized: "action_delete"), systemImage: "trash")
+                                        Label("action_delete", systemImage: "trash")
                                     }
                                 }
                                 .contextMenu {
                                     Button {
                                         ShareCoordinator.shareRecording(recording)
                                     } label: {
-                                        Label(String(localized: "action_share"), systemImage: "square.and.arrow.up")
+                                        Label("action_share", systemImage: "square.and.arrow.up")
                                     }
 
                                     Button {
@@ -121,7 +111,7 @@ struct RecordingsListView: View {
                                         editingTitle = recording.title
                                         showRenameAlert = true
                                     } label: {
-                                        Label(String(localized: "action_rename"), systemImage: "pencil")
+                                        Label("action_rename", systemImage: "pencil")
                                     }
 
                                     Divider()
@@ -129,7 +119,7 @@ struct RecordingsListView: View {
                                     Button(role: .destructive) {
                                         recorder.deleteRecording(recording)
                                     } label: {
-                                        Label(String(localized: "action_delete"), systemImage: "trash")
+                                        Label("action_delete", systemImage: "trash")
                                     }
                                 }
                             }
@@ -138,14 +128,14 @@ struct RecordingsListView: View {
                     }
                 }
             }
-            .navigationTitle(String(localized: "recordings_title"))
+            .navigationTitle("recordings_title")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Picker(String(localized: "sort_by"), selection: $sortOption) {
+                        Picker("sort_by", selection: $sortOption) {
                             ForEach(SortOption.allCases) { option in
-                                Label(option.label, systemImage: option.systemImage).tag(option)
+                                Label(LocalizedStringKey(option.rawValue), systemImage: option.systemImage).tag(option)
                             }
                         }
 
@@ -155,14 +145,13 @@ struct RecordingsListView: View {
                             sortAscending.toggle()
                         } label: {
                             if sortAscending {
-                                Label(String(localized: "sort_ascending"), systemImage: "arrow.up")
+                                Label("sort_ascending", systemImage: "arrow.up")
                             } else {
-                                Label(String(localized: "sort_descending"), systemImage: "arrow.down")
+                                Label("sort_descending", systemImage: "arrow.down")
                             }
                         }
                     } label: {
-                        Image(systemName: "arrow.up.arrow.down")
-                            .imageScale(.large)
+                        Label("sort_by", systemImage: "arrow.up.arrow.down")
                     }
                 }
             }
@@ -170,19 +159,19 @@ struct RecordingsListView: View {
                 PlaybackView(recording: recording)
                     .environmentObject(recorder)
             }
-            .alert(String(localized: "rename_alert_title"), isPresented: $showRenameAlert) {
-                TextField(String(localized: "recording_name_placeholder"), text: $editingTitle)
-                Button(String(localized: "rename_save")) {
+            .alert("rename_alert_title", isPresented: $showRenameAlert) {
+                TextField("recording_name_placeholder", text: $editingTitle)
+                Button("rename_save") {
                     if let rec = renameRecording {
                         recorder.updateRecordingTitle(rec.id, newTitle: editingTitle)
                     }
                     renameRecording = nil
                 }
-                Button(String(localized: "tag_cancel"), role: .cancel) {
+                Button("tag_cancel", role: .cancel) {
                     renameRecording = nil
                 }
             } message: {
-                Text(String(localized: "rename_alert_message"))
+                Text("rename_alert_message")
             }
         }
         .tint(.accentVivid)
@@ -199,7 +188,7 @@ struct RecordingRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             if isEditing {
-                TextField(String(localized: "recording_name_placeholder"), text: $editingTitle)
+                TextField("recording_name_placeholder", text: $editingTitle)
                     .textFieldStyle(.roundedBorder)
                     .colorScheme(.dark)
                     .onSubmit {
