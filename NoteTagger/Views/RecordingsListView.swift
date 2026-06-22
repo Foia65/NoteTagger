@@ -63,9 +63,8 @@ struct RecordingsListView: View {
                             description: Text("empty_recordings_description")
                         )
                     } else {
-                        List {
+                        VStack {
                             if recorder.recordings.count > 1 {
-                                Section {
                                     HStack(spacing: 12) {
                                         Menu {
                                             Picker("sort_by", selection: Binding(get: { SortOption(rawValue: sortOptionRaw) ?? .date }, set: { sortOptionRaw = $0.rawValue })) {
@@ -73,9 +72,9 @@ struct RecordingsListView: View {
                                                     Label(LocalizedStringKey(option.rawValue), systemImage: option.systemImage).tag(option)
                                                 }
                                             }
-
+                                            
                                             Divider()
-
+                                            
                                         } label: {
                                             Label {
                                                 // Avoid deprecated Text + Text concatenation — use a small HStack
@@ -87,10 +86,11 @@ struct RecordingsListView: View {
                                                 Image(systemName: sortOption.systemImage)
                                             }
                                         }
-                                        .buttonStyle(.bordered)
-
+                                        .buttonStyle(.borderless)
+                                        .id(sortOption) // per risolvere il problema delle label lunghe
+                                        
                                         Spacer()
-
+                                        
                                         Button {
                                             withAnimation { sortAscending.toggle() }
                                         } label: {
@@ -99,75 +99,78 @@ struct RecordingsListView: View {
                                         .buttonStyle(.bordered)
                                         .accessibilityLabel(Text(sortAscending ? "sort_ascending" : "sort_descending"))
                                     }
-                                }
                                 .listRowBackground(Color.darkSurface)
+                                .padding(.horizontal, 16)
                             }
-
-                            ForEach(sortedRecordings) { recording in
-                                NavigationLink(value: recording) {
-                                    RecordingRowView(
-                                        recording: recording,
-                                        isEditing: editingRecordingID == recording.id,
-                                        editingTitle: $editingTitle,
-                                        onStartEdit: {
-                                            editingRecordingID = recording.id
-                                            editingTitle = recording.title
-                                        },
-                                        onCommitEdit: {
-                                            recorder.updateRecordingTitle(recording.id, newTitle: editingTitle)
-                                            editingRecordingID = nil
+                            
+                            List {
+                                ForEach(sortedRecordings) { recording in
+                                    NavigationLink(value: recording) {
+                                        RecordingRowView(
+                                            recording: recording,
+                                            isEditing: editingRecordingID == recording.id,
+                                            editingTitle: $editingTitle,
+                                            onStartEdit: {
+                                                editingRecordingID = recording.id
+                                                editingTitle = recording.title
+                                            },
+                                            onCommitEdit: {
+                                                recorder.updateRecordingTitle(recording.id, newTitle: editingTitle)
+                                                editingRecordingID = nil
+                                            }
+                                        )
+                                    }
+                                    .listRowBackground(Color.darkSurface)
+                                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                                        Button {
+                                            ShareCoordinator.shareRecording(recording)
+                                        } label: {
+                                            Label("action_share", systemImage: "square.and.arrow.up")
                                         }
-                                    )
-                                }
-                                .listRowBackground(Color.darkSurface)
-                                .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                                    Button {
-                                        ShareCoordinator.shareRecording(recording)
-                                    } label: {
-                                        Label("action_share", systemImage: "square.and.arrow.up")
+                                        .tint(.accentVivid)
+                                        
+                                        Button {
+                                            renameRecording = recording
+                                            editingTitle = recording.title
+                                            showRenameAlert = true
+                                        } label: {
+                                            Label("action_rename", systemImage: "pencil")
+                                        }
+                                        .tint(.indigo)
                                     }
-                                    .tint(.accentVivid)
-
-                                    Button {
-                                        renameRecording = recording
-                                        editingTitle = recording.title
-                                        showRenameAlert = true
-                                    } label: {
-                                        Label("action_rename", systemImage: "pencil")
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        Button(role: .destructive) {
+                                            recorder.deleteRecording(recording)
+                                        } label: {
+                                            Label("action_delete", systemImage: "trash")
+                                        }
                                     }
-                                    .tint(.indigo)
-                                }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                    Button(role: .destructive) {
-                                        recorder.deleteRecording(recording)
-                                    } label: {
-                                        Label("action_delete", systemImage: "trash")
-                                    }
-                                }
-                                .contextMenu {
-                                    Button {
-                                        ShareCoordinator.shareRecording(recording)
-                                    } label: {
-                                        Label("action_share", systemImage: "square.and.arrow.up")
-                                    }
-
-                                    Button {
-                                        renameRecording = recording
-                                        editingTitle = recording.title
-                                        showRenameAlert = true
-                                    } label: {
-                                        Label("action_rename", systemImage: "pencil")
-                                    }
-
-                                    Divider()
-
-                                    Button(role: .destructive) {
-                                        recorder.deleteRecording(recording)
-                                    } label: {
-                                        Label("action_delete", systemImage: "trash")
+                                    .contextMenu {
+                                        Button {
+                                            ShareCoordinator.shareRecording(recording)
+                                        } label: {
+                                            Label("action_share", systemImage: "square.and.arrow.up")
+                                        }
+                                        
+                                        Button {
+                                            renameRecording = recording
+                                            editingTitle = recording.title
+                                            showRenameAlert = true
+                                        } label: {
+                                            Label("action_rename", systemImage: "pencil")
+                                        }
+                                        
+                                        Divider()
+                                        
+                                        Button(role: .destructive) {
+                                            recorder.deleteRecording(recording)
+                                        } label: {
+                                            Label("action_delete", systemImage: "trash")
+                                        }
                                     }
                                 }
                             }
+                            .animation(.easeInOut(duration: 0.25), value: sortedRecordings)
                         }
                         .scrollContentBackground(.hidden)
                         .listStyle(.plain)
@@ -271,7 +274,7 @@ private func selectAllTextInAlert() {
 }
 
 private func findTextField(in view: UIView) -> UITextField? {
-    if let tf = view as? UITextField { return tf }
+    if let textField = view as? UITextField { return textField }
     for subview in view.subviews {
         if let found = findTextField(in: subview) { return found }
     }
