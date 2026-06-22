@@ -1,7 +1,11 @@
 import SwiftUI
 
 private enum SortOption: String, CaseIterable, Identifiable {
-    case date, title, duration, size, bookmarks
+    case date = "sort_date"
+    case title = "sort_title"
+    case duration = "sort_duration"
+    case size = "sort_size"
+    case bookmarks = "sort_bookmarks"
 
     var id: Self { self }
 
@@ -60,36 +64,40 @@ struct RecordingsListView: View {
                         )
                     } else {
                         List {
-                            Section {
-                                HStack(spacing: 12) {
-                                    Menu {
-                                        Picker("sort_by", selection: Binding(get: { SortOption(rawValue: sortOptionRaw) ?? .date }, set: { sortOptionRaw = $0.rawValue })) {
-                                            ForEach(SortOption.allCases) { option in
-                                                Label(LocalizedStringKey(option.rawValue), systemImage: option.systemImage).tag(option)
+                            if recorder.recordings.count > 1 {
+                                Section {
+                                    HStack(spacing: 12) {
+                                        Menu {
+                                            Picker("sort_by", selection: Binding(get: { SortOption(rawValue: sortOptionRaw) ?? .date }, set: { sortOptionRaw = $0.rawValue })) {
+                                                ForEach(SortOption.allCases) { option in
+                                                    Label(LocalizedStringKey(option.rawValue), systemImage: option.systemImage).tag(option)
+                                                }
+                                            }
+
+                                            Divider()
+
+                                        } label: {
+                                            Label {
+                                                Text("sort_by") + Text(" ") + Text(LocalizedStringKey(sortOption.rawValue))
+                                            } icon: {
+                                                Image(systemName: sortOption.systemImage)
                                             }
                                         }
+                                        .buttonStyle(.bordered)
 
-                                        Divider()
+                                        Spacer()
 
-                                    } label: {
-                                        // show the active sort field with its icon
-                                        Label(LocalizedStringKey(sortOption.rawValue), systemImage: sortOption.systemImage)
+                                        Button {
+                                            withAnimation { sortAscending.toggle() }
+                                        } label: {
+                                            Image(systemName: sortAscending ? "arrow.up" : "arrow.down")
+                                        }
+                                        .buttonStyle(.bordered)
+                                        .accessibilityLabel(Text(sortAscending ? "sort_ascending" : "sort_descending"))
                                     }
-                                    .buttonStyle(.bordered)
-
-                                    Spacer()
-
-                                    // quick inline toggle that is independent from the Menu
-                                    Button {
-                                        withAnimation { sortAscending.toggle() }
-                                    } label: {
-                                        Image(systemName: sortAscending ? "arrow.up" : "arrow.down")
-                                    }
-                                    .buttonStyle(.bordered)
-                                    .accessibilityLabel(Text(sortAscending ? "sort_ascending" : "sort_descending"))
                                 }
+                                .listRowBackground(Color.darkSurface)
                             }
-                            .listRowBackground(Color.darkSurface)
 
                             ForEach(sortedRecordings) { recording in
                                 NavigationLink(value: recording) {
@@ -158,18 +166,17 @@ struct RecordingsListView: View {
                             }
                         }
                         .scrollContentBackground(.hidden)
+                        .listStyle(.plain)
                     }
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("recordings_title")
-                        .font(.title)
+                        .font(.headline)
                 }
             }
-            
-            //   .navigationTitle("recordings_title")  // rimosso perchè non si localizza real-time
-            // .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Recording.self) { recording in
                 PlaybackView(recording: recording)
                     .environmentObject(recorder)
