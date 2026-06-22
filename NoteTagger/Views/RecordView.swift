@@ -117,7 +117,7 @@ struct RecordingTimerView: View {
     var body: some View {
         VStack(spacing: 8) {
             Text(formattedTime)
-                .font(.system(size: 72, weight: .bold, design: .monospaced))
+                .font(.custom("DigitalDismay", size: 100))
                 .foregroundStyle(Color.green)
                 .contentTransition(.numericText())
 

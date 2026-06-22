@@ -7,19 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E4CBE4862FE94FE900BFD100 /* Digital_Dismay.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4CBE4852FE94FE900BFD100 /* Digital_Dismay.otf */; };
 		E4EE37152FE5A0FB003E8F52 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = E4EE37142FE5A0FB003E8F52 /* .swiftlint.yml */; };
 		E4EE37172FE5A3CD003E8F52 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E4EE37162FE5A3CD003E8F52 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E47B99832FE3116700C591C5 /* NoteTagger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoteTagger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4CBE4852FE94FE900BFD100 /* Digital_Dismay.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Digital_Dismay.otf; sourceTree = "<group>"; };
 		E4EE37142FE5A0FB003E8F52 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		E4EE37162FE5A3CD003E8F52 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E4CBE4882FE9502300BFD100 /* Exceptions for "NoteTagger" folder in "NoteTagger" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E47B99822FE3116700C591C5 /* NoteTagger */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E47B99852FE3116700C591C5 /* NoteTagger */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E4CBE4882FE9502300BFD100 /* Exceptions for "NoteTagger" folder in "NoteTagger" target */,
+			);
 			path = NoteTagger;
 			sourceTree = "<group>";
 		};
@@ -43,6 +58,7 @@
 				E47B99842FE3116700C591C5 /* Products */,
 				E4EE37142FE5A0FB003E8F52 /* .swiftlint.yml */,
 				E4EE37162FE5A3CD003E8F52 /* .gitignore */,
+				E4CBE4852FE94FE900BFD100 /* Digital_Dismay.otf */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4EE37172FE5A3CD003E8F52 /* .gitignore in Resources */,
+				E4CBE4862FE94FE900BFD100 /* Digital_Dismay.otf in Resources */,
 				E4EE37152FE5A0FB003E8F52 /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -314,6 +331,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoteTagger/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs microphone access to record meetings and lectures.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -349,6 +367,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoteTagger/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs microphone access to record meetings and lectures.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
