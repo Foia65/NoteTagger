@@ -478,6 +478,7 @@
       }
     },
     "settings_method_basics" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

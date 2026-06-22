@@ -22,8 +22,10 @@ struct RecordingsListView: View {
     @State private var editingTitle = ""
     @State private var showRenameAlert = false
     @State private var renameRecording: Recording?
-    @State private var sortOption: SortOption = .date
-    @State private var sortAscending = false
+    @AppStorage("recordings_sort_option") private var sortOptionRaw: String = SortOption.date.rawValue
+    @AppStorage("recordings_sort_ascending") private var sortAscending = false
+
+    private var sortOption: SortOption { SortOption(rawValue: sortOptionRaw) ?? .date }
 
     private var sortedRecordings: [Recording] {
         recorder.recordings.sorted { a, b in
@@ -58,6 +60,37 @@ struct RecordingsListView: View {
                         )
                     } else {
                         List {
+                            Section {
+                                HStack(spacing: 12) {
+                                    Menu {
+                                        Picker("sort_by", selection: Binding(get: { SortOption(rawValue: sortOptionRaw) ?? .date }, set: { sortOptionRaw = $0.rawValue })) {
+                                            ForEach(SortOption.allCases) { option in
+                                                Label(LocalizedStringKey(option.rawValue), systemImage: option.systemImage).tag(option)
+                                            }
+                                        }
+
+                                        Divider()
+
+                                    } label: {
+                                        // show the active sort field with its icon
+                                        Label(LocalizedStringKey(sortOption.rawValue), systemImage: sortOption.systemImage)
+                                    }
+                                    .buttonStyle(.bordered)
+
+                                    Spacer()
+
+                                    // quick inline toggle that is independent from the Menu
+                                    Button {
+                                        withAnimation { sortAscending.toggle() }
+                                    } label: {
+                                        Image(systemName: sortAscending ? "arrow.up" : "arrow.down")
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .accessibilityLabel(Text(sortAscending ? "sort_ascending" : "sort_descending"))
+                                }
+                            }
+                            .listRowBackground(Color.darkSurface)
+
                             ForEach(sortedRecordings) { recording in
                                 NavigationLink(value: recording) {
                                     RecordingRowView(
@@ -128,33 +161,15 @@ struct RecordingsListView: View {
                     }
                 }
             }
-            .navigationTitle("recordings_title")
-            .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Picker("sort_by", selection: $sortOption) {
-                            ForEach(SortOption.allCases) { option in
-                                Label(LocalizedStringKey(option.rawValue), systemImage: option.systemImage).tag(option)
-                            }
-                        }
-
-                        Divider()
-
-                        Button {
-                            sortAscending.toggle()
-                        } label: {
-                            if sortAscending {
-                                Label("sort_ascending", systemImage: "arrow.up")
-                            } else {
-                                Label("sort_descending", systemImage: "arrow.down")
-                            }
-                        }
-                    } label: {
-                        Label("sort_by", systemImage: "arrow.up.arrow.down")
-                    }
+                ToolbarItem(placement: .principal) {
+                    Text("recordings_title")
+                        .font(.title)
                 }
             }
+            
+            //   .navigationTitle("recordings_title")  // rimosso perchè non si localizza real-time
+            // .navigationBarTitleDisplayMode(.large)
             .navigationDestination(for: Recording.self) { recording in
                 PlaybackView(recording: recording)
                     .environmentObject(recorder)
