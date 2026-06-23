@@ -191,7 +191,8 @@ struct RecordingsListView: View {
             .alert("rename_alert_title", isPresented: $showRenameAlert) {
                 TextField("recording_name_placeholder", text: $editingTitle)
                     .autocorrectionDisabled(true)
-                Button("rename_save") {
+                    .textInputAutocapitalization(.never)
+                    Button("rename_save") {
                     if let rec = renameRecording {
                         recorder.updateRecordingTitle(rec.id, newTitle: editingTitle)
                     }

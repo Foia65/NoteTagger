@@ -9,6 +9,8 @@ struct PlaybackView: View {
     @State private var editingBookmarkTitle = ""
     @State private var showRenameBookmarkAlert = false
     @State private var renameBookmark: Bookmark?
+    @State private var showAddBookmarkAlert = false
+    @State private var newBookmarkTitle = ""
     @Environment(\.dismiss) private var dismiss
 
     init(recording: Recording) {
@@ -60,8 +62,8 @@ struct PlaybackView: View {
                         showRenameBookmarkAlert = true
                     },
                     onAddBookmark: {
-                        recorder.addBookmark(to: playerManager.recording.id, timestamp: playerManager.currentTime)
-                        playerManager.refreshRecording(from: recorder)
+                        newBookmarkTitle = ""
+                        showAddBookmarkAlert = true
                     }
                 )
             }
@@ -84,6 +86,7 @@ struct PlaybackView: View {
         .alert("rename_bookmark_alert_title", isPresented: $showRenameBookmarkAlert) {
             TextField("tag_placeholder", text: $editingBookmarkTitle)
                 .autocorrectionDisabled(true)
+                .textInputAutocapitalization(.never)
             Button("rename_save") {
                 if let bookmark = renameBookmark {
                     recorder.updateBookmarkTitle(playerManager.recording.id, bookmarkID: bookmark.id, newTitle: editingBookmarkTitle)
@@ -98,6 +101,25 @@ struct PlaybackView: View {
             Text("rename_bookmark_alert_message")
         }
         .onChange(of: showRenameBookmarkAlert) { _, isPresented in
+            if isPresented {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                    selectAllTextInAlert()
+                }
+            }
+        }
+        .alert("tag_alert_title", isPresented: $showAddBookmarkAlert) {
+            TextField("tag_placeholder", text: $newBookmarkTitle)
+                .autocorrectionDisabled(true)
+                .textInputAutocapitalization(.never)
+                Button("tag_save") {
+                recorder.addBookmark(to: playerManager.recording.id, title: newBookmarkTitle, timestamp: playerManager.currentTime)
+                playerManager.refreshRecording(from: recorder)
+            }
+            Button("tag_cancel", role: .cancel) {}
+        } message: {
+            Text("tag_alert_message")
+        }
+        .onChange(of: showAddBookmarkAlert) { _, isPresented in
             if isPresented {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                     selectAllTextInAlert()
@@ -224,7 +246,7 @@ struct BookmarksListView: View {
                         onAddBookmark()
                     } label: {
                         Image(systemName: "plus.circle.fill")
-                            .foregroundStyle(Color.accentVivid)
+                            .foregroundStyle(Color.tagOrange)
                     }
                     .accessibilityLabel(Text("add_bookmark_button"))
                 }
