@@ -137,6 +137,8 @@
       }
     },
     "default_recording_title" : {
+      "comment" : "Default title for a new recording",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -361,6 +363,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rinomina Registrazione"
+          }
+        }
+      }
+    },
+    "rename_bookmark_alert_message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a new name for this bookmark."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci un nuovo nome per questo segnalibro."
+          }
+        }
+      }
+    },
+    "rename_bookmark_alert_title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename Bookmark"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rinomina Segnalibro"
           }
         }
       }
@@ -672,6 +706,7 @@
       }
     },
     "share_export_header" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -951,6 +986,7 @@
       }
     },
     "untitled_bookmark" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

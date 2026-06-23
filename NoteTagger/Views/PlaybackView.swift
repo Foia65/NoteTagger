@@ -7,6 +7,8 @@ struct PlaybackView: View {
     @StateObject private var playerManager: AudioPlayerManager
     @State private var editingBookmarkID: UUID?
     @State private var editingBookmarkTitle = ""
+    @State private var showRenameBookmarkAlert = false
+    @State private var renameBookmark: Bookmark?
     @Environment(\.dismiss) private var dismiss
 
     init(recording: Recording) {
@@ -52,6 +54,11 @@ struct PlaybackView: View {
                         onDelete: { bookmarkID in
                             recorder.deleteBookmark(from: playerManager.recording.id, bookmarkID: bookmarkID)
                             playerManager.refreshRecording(from: recorder)
+                        },
+                        onRequestRename: { bookmark in
+                            renameBookmark = bookmark
+                            editingBookmarkTitle = bookmark.title
+                            showRenameBookmarkAlert = true
                         }
                     )
                 } else {
@@ -80,6 +87,29 @@ struct PlaybackView: View {
             }
         }
         .onDisappear { playerManager.stop() }
+        .alert("rename_bookmark_alert_title", isPresented: $showRenameBookmarkAlert) {
+            TextField("tag_placeholder", text: $editingBookmarkTitle)
+                .autocorrectionDisabled(true)
+            Button("rename_save") {
+                if let bookmark = renameBookmark {
+                    recorder.updateBookmarkTitle(playerManager.recording.id, bookmarkID: bookmark.id, newTitle: editingBookmarkTitle)
+                    playerManager.refreshRecording(from: recorder)
+                }
+                renameBookmark = nil
+            }
+            Button("tag_cancel", role: .cancel) {
+                renameBookmark = nil
+            }
+        } message: {
+            Text("rename_bookmark_alert_message")
+        }
+        .onChange(of: showRenameBookmarkAlert) { _, isPresented in
+            if isPresented {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                    selectAllTextInAlert()
+                }
+            }
+        }
         .tint(Color.accentVivid)
     }
 }
@@ -184,6 +214,7 @@ struct BookmarksListView: View {
     let onSeek: (TimeInterval) -> Void
     let onUpdateTitle: (UUID, String) -> Void
     let onDelete: (UUID) -> Void
+    let onRequestRename: (Bookmark) -> Void
 
     var body: some View {
         List {
@@ -207,6 +238,36 @@ struct BookmarksListView: View {
                         }
                     )
                     .listRowBackground(Color.darkSurface)
+                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                        Button {
+                            onRequestRename(bookmark)
+                        } label: {
+                            Label("action_rename", systemImage: "pencil")
+                        }
+                        .tint(.indigo)
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            onDelete(bookmark.id)
+                        } label: {
+                            Label("action_delete", systemImage: "trash")
+                        }
+                    }
+                    .contextMenu {
+                        Button {
+                            onRequestRename(bookmark)
+                        } label: {
+                            Label("action_rename", systemImage: "pencil")
+                        }
+
+                        Divider()
+
+                        Button(role: .destructive) {
+                            onDelete(bookmark.id)
+                        } label: {
+                            Label("action_delete", systemImage: "trash")
+                        }
+                    }
                 }
                 .onDelete { indexSet in
                     let sorted = bookmarks.sorted(by: { $0.timestamp < $1.timestamp })
@@ -238,7 +299,7 @@ struct BookmarkRowView: View {
                         .colorScheme(.dark)
                         .onSubmit { onCommitEdit() }
                 } else {
-                    Text(bookmark.title.isEmpty ? "untitled_bookmark" : bookmark.title)
+                    Text(LocalizedStringKey(bookmark.title.isEmpty ? "untitled_bookmark" : bookmark.title))
                         .font(.body)
                         .foregroundStyle(.white)
                 }

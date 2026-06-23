@@ -138,7 +138,7 @@ struct RecordingsListView: View {
                                         }
                                         .tint(.indigo)
                                     }
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                         Button(role: .destructive) {
                                             recorder.deleteRecording(recording)
                                         } label: {
@@ -263,22 +263,6 @@ struct RecordingRowView: View {
         }
         .padding(.vertical, 4)
     }
-}
-
-private func selectAllTextInAlert() {
-    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-          let window = windowScene.windows.first else { return }
-    if let textField = findTextField(in: window) {
-        textField.selectAll(nil)
-    }
-}
-
-private func findTextField(in view: UIView) -> UITextField? {
-    if let textField = view as? UITextField { return textField }
-    for subview in view.subviews {
-        if let found = findTextField(in: subview) { return found }
-    }
-    return nil
 }
 
 #Preview {

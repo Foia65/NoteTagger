@@ -67,13 +67,13 @@ struct ShareCoordinator {
     private static func exportText(title: String, bookmarks: [Bookmark]) -> String {
         var lines: [String] = []
         lines.append(title)
-        lines.append(NSLocalizedString("share_export_header", comment: ""))
+        lines.append(localizedAppString("share_export_header"))
         lines.append("")
 
         let sorted = bookmarks.sorted(by: { $0.timestamp < $1.timestamp })
         for bookmark in sorted {
             let bmTitle = bookmark.title.isEmpty
-                ? NSLocalizedString("untitled_bookmark", comment: "")
+                ? localizedAppString("untitled_bookmark")
                 : bookmark.title
             lines.append("[\(bookmark.formattedTimestamp)] \(bmTitle)")
         }

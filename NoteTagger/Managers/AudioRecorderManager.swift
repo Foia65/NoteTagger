@@ -71,7 +71,7 @@ final class AudioRecorderManager: NSObject, ObservableObject {
             audioRecorder?.isMeteringEnabled = true
             audioRecorder?.record()
 
-            let title = String(localized: "default_recording_title")
+            let title = localizedAppString("default_recording_title")
             currentRecording = Recording(title: title, fileURL: fileURL)
             state = .recording
             currentTime = 0
