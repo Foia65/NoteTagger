@@ -56,22 +56,38 @@
         }
       }
     },
-    "action_share" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Condividi"
-          }
-        }
-      }
-    },
+     "action_share" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Share"
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Condividi"
+           }
+         }
+       }
+     },
+     "add_bookmark_button" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Add Bookmark"
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Aggiungi Segnalibro"
+           }
+         }
+       }
+     },
     "bookmarks_header" : {
       "localizations" : {
         "en" : {
@@ -154,22 +170,22 @@
         }
       }
     },
-    "empty_bookmarks_description" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No bookmarks were added during this recording."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessun segnalibro aggiunto durante questa registrazione."
-          }
-        }
-      }
-    },
+     "empty_bookmarks_description" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Tap the + button to add a bookmark at the current position."
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Tocca il pulsante + per aggiungere un segnalibro alla posizione corrente."
+           }
+         }
+       }
+     },
     "empty_bookmarks_title" : {
       "localizations" : {
         "en" : {

@@ -109,6 +109,13 @@ final class AudioRecorderManager: NSObject, ObservableObject {
         currentRecording?.bookmarks.append(bookmark)
     }
 
+    func addBookmark(to recordingID: UUID, title: String = "", timestamp: TimeInterval) {
+        guard let index = recordings.firstIndex(where: { $0.id == recordingID }) else { return }
+        let bookmark = Bookmark(title: title, timestamp: timestamp)
+        recordings[index].bookmarks.append(bookmark)
+        saveRecordings()
+    }
+
     func deleteRecording(_ recording: Recording) {
         try? FileManager.default.removeItem(at: recording.fileURL)
         recordings.removeAll { $0.id == recording.id }

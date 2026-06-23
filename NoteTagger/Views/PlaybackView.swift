@@ -37,39 +37,33 @@ struct PlaybackView: View {
                 PlaybackProgressView(playerManager: playerManager)
                 PlaybackControlsView(playerManager: playerManager)
 
-                if !playerManager.recording.bookmarks.isEmpty {
-                    Divider()
-                        .background(Color.darkBorder)
-                        .padding(.horizontal)
+                Divider()
+                    .background(Color.darkBorder)
+                    .padding(.horizontal)
 
-                    BookmarksListView(
-                        bookmarks: playerManager.recording.bookmarks,
-                        editingBookmarkID: $editingBookmarkID,
-                        editingBookmarkTitle: $editingBookmarkTitle,
-                        onSeek: { timestamp in playerManager.seek(to: timestamp) },
-                        onUpdateTitle: { bookmarkID, newTitle in
-                            recorder.updateBookmarkTitle(playerManager.recording.id, bookmarkID: bookmarkID, newTitle: newTitle)
-                            playerManager.refreshRecording(from: recorder)
-                        },
-                        onDelete: { bookmarkID in
-                            recorder.deleteBookmark(from: playerManager.recording.id, bookmarkID: bookmarkID)
-                            playerManager.refreshRecording(from: recorder)
-                        },
-                        onRequestRename: { bookmark in
-                            renameBookmark = bookmark
-                            editingBookmarkTitle = bookmark.title
-                            showRenameBookmarkAlert = true
-                        }
-                    )
-                } else {
-                    Spacer()
-                    ContentUnavailableView(
-                        "empty_bookmarks_title",
-                        systemImage: "bookmark",
-                        description: Text("empty_bookmarks_description")
-                    )
-                    Spacer()
-                }
+                BookmarksListView(
+                    bookmarks: playerManager.recording.bookmarks,
+                    editingBookmarkID: $editingBookmarkID,
+                    editingBookmarkTitle: $editingBookmarkTitle,
+                    onSeek: { timestamp in playerManager.seek(to: timestamp) },
+                    onUpdateTitle: { bookmarkID, newTitle in
+                        recorder.updateBookmarkTitle(playerManager.recording.id, bookmarkID: bookmarkID, newTitle: newTitle)
+                        playerManager.refreshRecording(from: recorder)
+                    },
+                    onDelete: { bookmarkID in
+                        recorder.deleteBookmark(from: playerManager.recording.id, bookmarkID: bookmarkID)
+                        playerManager.refreshRecording(from: recorder)
+                    },
+                    onRequestRename: { bookmark in
+                        renameBookmark = bookmark
+                        editingBookmarkTitle = bookmark.title
+                        showRenameBookmarkAlert = true
+                    },
+                    onAddBookmark: {
+                        recorder.addBookmark(to: playerManager.recording.id, timestamp: playerManager.currentTime)
+                        playerManager.refreshRecording(from: recorder)
+                    }
+                )
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -215,13 +209,33 @@ struct BookmarksListView: View {
     let onUpdateTitle: (UUID, String) -> Void
     let onDelete: (UUID) -> Void
     let onRequestRename: (Bookmark) -> Void
+    let onAddBookmark: () -> Void
 
     var body: some View {
         List {
             Section(
-                header: Text("bookmarks_header")
-                    .foregroundStyle(Color.darkSecondary)
+                header: HStack {
+                    if !bookmarks.isEmpty {
+                        Text("bookmarks_header")
+                            .foregroundStyle(Color.darkSecondary)
+                    }
+                    Spacer()
+                    Button {
+                        onAddBookmark()
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(Color.accentVivid)
+                    }
+                    .accessibilityLabel(Text("add_bookmark_button"))
+                }
             ) {
+                if bookmarks.isEmpty {
+                    ContentUnavailableView(
+                        "empty_bookmarks_title",
+                        systemImage: "bookmark",
+                        description: Text("empty_bookmarks_description")
+                    )
+                }
                 ForEach(bookmarks.sorted(by: { $0.timestamp < $1.timestamp })) { bookmark in
                     BookmarkRowView(
                         bookmark: bookmark,
@@ -439,3 +453,25 @@ extension AudioPlayerManager: AVAudioPlayerDelegate {
     }
     .preferredColorScheme(.dark)
 }
+
+#Preview("No bookmarks") {
+    let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    let recordingsDir = docs.appendingPathComponent("Recordings", isDirectory: true)
+    try? FileManager.default.createDirectory(at: recordingsDir, withIntermediateDirectories: true)
+
+    let sampleURL = recordingsDir.appendingPathComponent("preview.m4a")
+    FileManager.default.createFile(atPath: sampleURL.path, contents: Data(count: 1_000_000))
+
+    let recording = Recording(
+        title: "Lezione di Fisica",
+        fileURL: sampleURL,
+        duration: 3724,
+        createdAt: Date().addingTimeInterval(-3600),
+        bookmarks: []
+    )
+
+    return NavigationStack {
+        PlaybackView(recording: recording)
+            .environmentObject(AudioRecorderManager())
+    }
+    .preferredColorScheme(.dark)}
