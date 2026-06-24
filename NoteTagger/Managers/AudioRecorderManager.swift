@@ -141,6 +141,14 @@ final class AudioRecorderManager: NSObject, ObservableObject {
         saveRecordings()
     }
 
+    func updateTranscription(_ recordingID: UUID, transcription: String?) {
+        guard let index = recordings.firstIndex(where: { $0.id == recordingID }) else { return }
+        if let transcription, !transcription.isEmpty {
+            recordings[index].transcription = transcription
+        }
+        saveRecordings()
+    }
+
     func bookmarkURL(for recording: Recording) -> URL {
         recording.fileURL
     }

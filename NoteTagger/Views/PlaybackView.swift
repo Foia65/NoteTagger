@@ -1,5 +1,6 @@
 import AVFoundation
 import Combine
+import Speech
 import SwiftUI
 
 struct PlaybackView: View {
@@ -11,6 +12,9 @@ struct PlaybackView: View {
     @State private var renameBookmark: Bookmark?
     @State private var showAddBookmarkAlert = false
     @State private var newBookmarkTitle = ""
+    @StateObject private var transcriptionManager = TranscriptionManager()
+    @State private var transcriptionError: String?
+    @State private var transcriptionTask: Task<Void, Never>?
     @Environment(\.dismiss) private var dismiss
 
     init(recording: Recording) {
@@ -38,6 +42,24 @@ struct PlaybackView: View {
 
                 PlaybackProgressView(playerManager: playerManager)
                 PlaybackControlsView(playerManager: playerManager)
+
+                TranscriptionView(
+                    transcription: playerManager.recording.transcription,
+                    isTranscribing: transcriptionManager.isTranscribing,
+                    error: transcriptionError,
+                    onTranscribe: {
+                        transcriptionTask = Task {
+                            do {
+                                try await transcriptionManager.ensureModel()
+                                let text = try await transcriptionManager.transcribe(url: playerManager.recording.fileURL)
+                                recorder.updateTranscription(playerManager.recording.id, transcription: text)
+                                playerManager.refreshRecording(from: recorder)
+                            } catch {
+                                transcriptionError = error.localizedDescription
+                            }
+                        }
+                    }
+                )
 
                 Divider()
                     .background(Color.darkBorder)
@@ -82,7 +104,10 @@ struct PlaybackView: View {
                 }
             }
         }
-        .onDisappear { playerManager.stop() }
+        .onDisappear {
+            transcriptionTask?.cancel()
+            playerManager.stop()
+        }
         .alert("rename_bookmark_alert_title", isPresented: $showRenameBookmarkAlert) {
             TextField("tag_placeholder", text: $editingBookmarkTitle)
                 .autocorrectionDisabled(true)

@@ -7,6 +7,7 @@ struct Recording: Identifiable, Codable, Equatable, Hashable {
     var duration: TimeInterval
     var createdAt: Date
     var bookmarks: [Bookmark]
+    var transcription: String?
 
     init(
         id: UUID = UUID(),
@@ -14,7 +15,8 @@ struct Recording: Identifiable, Codable, Equatable, Hashable {
         fileURL: URL,
         duration: TimeInterval = 0,
         createdAt: Date = Date(),
-        bookmarks: [Bookmark] = []
+        bookmarks: [Bookmark] = [],
+        transcription: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -22,6 +24,7 @@ struct Recording: Identifiable, Codable, Equatable, Hashable {
         self.duration = duration
         self.createdAt = createdAt
         self.bookmarks = bookmarks
+        self.transcription = transcription
     }
 
     var formattedDuration: String {

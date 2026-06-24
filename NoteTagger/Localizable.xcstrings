@@ -1001,23 +1001,119 @@
         }
       }
     },
-    "untitled_bookmark" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Untitled"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Senza titolo"
-          }
-        }
-      }
-    }
+     "untitled_bookmark" : {
+       "extractionState" : "stale",
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Untitled"
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Senza titolo"
+           }
+         }
+       }
+     },
+     "transcription_button" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Transcribe Recording"
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Trascrivi registrazione"
+           }
+         }
+       }
+     },
+     "transcription_error_unsupported" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Transcription requires iOS 26 or later."
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "La trascrizione richiede iOS 26 o successivo."
+           }
+         }
+       }
+     },
+     "transcription_header" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Transcription"
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Trascrizione"
+           }
+         }
+       }
+     },
+     "transcription_in_progress" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Transcribing..."
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Trascrizione in corso..."
+           }
+         }
+       }
+     },
+     "transcription_complete" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Transcription complete"
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Trascrizione completata"
+           }
+         }
+       }
+     },
+     "transcription_show_button" : {
+       "localizations" : {
+         "en" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Show"
+           }
+         },
+         "it" : {
+           "stringUnit" : {
+             "state" : "translated",
+             "value" : "Mostra"
+           }
+         }
+       }
+     }
   },
   "version" : "1.2"
 }

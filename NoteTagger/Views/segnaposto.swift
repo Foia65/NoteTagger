@@ -1,10 +1,3 @@
-//
-//  segnaposto.swift
-//  NoteTagger
-//
-//  Created by Francesco Foianesi on 20/06/2026.
-//
-
 import SwiftUI
 
 struct Segnaposto: View {

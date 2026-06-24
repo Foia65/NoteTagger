@@ -10,6 +10,7 @@ struct NoteTaggerApp: App {
 //        }
 //    }
     
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

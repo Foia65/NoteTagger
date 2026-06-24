@@ -241,17 +241,21 @@ struct RecordingRowView: View {
                     }
             }
 
-            HStack {
-                Label(recording.formattedDuration, systemImage: "clock")
-                Text("•")
-                    .foregroundStyle(Color.darkTertiary)
-                Label(recording.formattedFileSize, systemImage: "doc")
-                Spacer()
-                if !recording.bookmarks.isEmpty {
-                    Label("\(recording.bookmarks.count)", systemImage: "bookmark.fill")
-                        .foregroundStyle(Color.tagOrange)
-                }
-            }
+             HStack {
+                 Label(recording.formattedDuration, systemImage: "clock")
+                 Text("•")
+                     .foregroundStyle(Color.darkTertiary)
+                 Label(recording.formattedFileSize, systemImage: "doc")
+                 Spacer()
+                 if recording.transcription != nil {
+                     Image(systemName: "text.bubble.fill")
+                         .foregroundStyle(Color.accentVivid)
+                 }
+                 if !recording.bookmarks.isEmpty {
+                     Label("\(recording.bookmarks.count)", systemImage: "bookmark.fill")
+                         .foregroundStyle(Color.tagOrange)
+                 }
+             }
             .font(.caption)
             .foregroundStyle(Color.darkSecondary)
 
@@ -291,7 +295,8 @@ struct RecordingRowView: View {
                     Bookmark(title: "Domanda Esame", timestamp: 252),
                     Bookmark(title: "Formula importante", timestamp: 1200),
                     Bookmark(title: "Esercizio 3", timestamp: 2890)
-                ]
+                ],
+                transcription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             ),
             Recording(
                 title: "Riunione di progetto",
