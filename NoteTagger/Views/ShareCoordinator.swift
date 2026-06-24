@@ -25,6 +25,9 @@ struct ShareCoordinator {
         if !recording.bookmarks.isEmpty {
             items.append(namedTextFile(title: recording.title, bookmarks: recording.bookmarks))
         }
+        if let transcription = recording.transcription, !transcription.isEmpty {
+            items.append(namedTranscriptionFile(title: recording.title, transcription: transcription))
+        }
         return items
     }
 
@@ -45,6 +48,17 @@ struct ShareCoordinator {
         let dest = tempDir.appendingPathComponent("\(base)_bookmarks.txt")
         try? FileManager.default.removeItem(at: dest)
         let text = exportText(title: title, bookmarks: bookmarks)
+        try? text.write(to: dest, atomically: true, encoding: .utf8)
+        return dest
+    }
+
+    private static func namedTranscriptionFile(title: String, transcription: String) -> URL {
+        let sanitized = sanitizeFilename(title)
+        let base = sanitized.isEmpty ? "recording" : sanitized
+        let tempDir = FileManager.default.temporaryDirectory
+        let dest = tempDir.appendingPathComponent("\(base)_transcription.txt")
+        try? FileManager.default.removeItem(at: dest)
+        let text = exportTranscription(title: title, transcription: transcription)
         try? text.write(to: dest, atomically: true, encoding: .utf8)
         return dest
     }
@@ -78,6 +92,15 @@ struct ShareCoordinator {
             lines.append("[\(bookmark.formattedTimestamp)] \(bmTitle)")
         }
 
+        return lines.joined(separator: "\n")
+    }
+
+    private static func exportTranscription(title: String, transcription: String) -> String {
+        var lines: [String] = []
+        lines.append(title)
+        lines.append(localizedAppString("share_export_transcription_header"))
+        lines.append("")
+        lines.append(transcription)
         return lines.joined(separator: "\n")
     }
 

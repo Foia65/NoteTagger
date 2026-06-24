@@ -56,38 +56,38 @@
         }
       }
     },
-     "action_share" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Share"
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Condividi"
-           }
-         }
-       }
-     },
-     "add_bookmark_button" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Add Bookmark"
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Aggiungi Segnalibro"
-           }
-         }
-       }
-     },
+    "action_share" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividi"
+          }
+        }
+      }
+    },
+    "add_bookmark_button" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Bookmark"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi Segnalibro"
+          }
+        }
+      }
+    },
     "bookmarks_header" : {
       "localizations" : {
         "en" : {
@@ -154,7 +154,7 @@
     },
     "default_recording_title" : {
       "comment" : "Default title for a new recording",
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -170,22 +170,22 @@
         }
       }
     },
-     "empty_bookmarks_description" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Tap the + button to add a bookmark at the current position."
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Tocca il pulsante + per aggiungere un segnalibro alla posizione corrente."
-           }
-         }
-       }
-     },
+    "empty_bookmarks_description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the + button to add a bookmark at the current position."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tocca il pulsante + per aggiungere un segnalibro alla posizione corrente."
+          }
+        }
+      }
+    },
     "empty_bookmarks_title" : {
       "localizations" : {
         "en" : {
@@ -528,7 +528,7 @@
       }
     },
     "settings_method_basics" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -577,7 +577,7 @@
       }
     },
     "settings_premium_user" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -722,7 +722,7 @@
       }
     },
     "share_export_header" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -734,6 +734,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Segnalibri"
+          }
+        }
+      }
+    },
+    "share_export_transcription_header" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcription"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trascrizione"
           }
         }
       }
@@ -1001,119 +1018,119 @@
         }
       }
     },
-     "untitled_bookmark" : {
-       "extractionState" : "stale",
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Untitled"
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Senza titolo"
-           }
-         }
-       }
-     },
-     "transcription_button" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Transcribe Recording"
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Trascrivi registrazione"
-           }
-         }
-       }
-     },
-     "transcription_error_unsupported" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Transcription requires iOS 26 or later."
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "La trascrizione richiede iOS 26 o successivo."
-           }
-         }
-       }
-     },
-     "transcription_header" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Transcription"
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Trascrizione"
-           }
-         }
-       }
-     },
-     "transcription_in_progress" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Transcribing..."
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Trascrizione in corso..."
-           }
-         }
-       }
-     },
-     "transcription_complete" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Transcription complete"
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Trascrizione completata"
-           }
-         }
-       }
-     },
-     "transcription_show_button" : {
-       "localizations" : {
-         "en" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Show"
-           }
-         },
-         "it" : {
-           "stringUnit" : {
-             "state" : "translated",
-             "value" : "Mostra"
-           }
-         }
-       }
-     }
+    "transcription_button" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcribe Recording"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trascrivi registrazione"
+          }
+        }
+      }
+    },
+    "transcription_complete" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcription complete"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trascrizione completata"
+          }
+        }
+      }
+    },
+    "transcription_error_unsupported" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcription requires iOS 26 or later."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La trascrizione richiede iOS 26 o successivo."
+          }
+        }
+      }
+    },
+    "transcription_header" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcription"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trascrizione"
+          }
+        }
+      }
+    },
+    "transcription_in_progress" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcribing..."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trascrizione in corso..."
+          }
+        }
+      }
+    },
+    "transcription_show_button" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra"
+          }
+        }
+      }
+    },
+    "untitled_bookmark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untitled"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senza titolo"
+          }
+        }
+      }
+    }
   },
   "version" : "1.2"
 }
