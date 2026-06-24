@@ -103,9 +103,9 @@ final class AudioRecorderManager: NSObject, ObservableObject {
         currentTime = 0
     }
 
-    func addBookmark(title: String = "") {
+    func addBookmark(title: String = "", timestamp: TimeInterval? = nil) {
         guard state == .recording else { return }
-        let bookmark = Bookmark(title: title, timestamp: currentTime)
+        let bookmark = Bookmark(title: title, timestamp: timestamp ?? currentTime)
         currentRecording?.bookmarks.append(bookmark)
     }
 

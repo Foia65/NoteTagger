@@ -12,6 +12,7 @@ struct PlaybackView: View {
     @State private var renameBookmark: Bookmark?
     @State private var showAddBookmarkAlert = false
     @State private var newBookmarkTitle = ""
+    @State private var pendingBookmarkTimestamp: TimeInterval = 0
     @StateObject private var transcriptionManager = TranscriptionManager()
     @State private var transcriptionError: String?
     @State private var transcriptionTask: Task<Void, Never>?
@@ -26,7 +27,7 @@ struct PlaybackView: View {
             Color.darkBackground.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                VStack(spacing: 16) {
+                VStack(spacing: 10) {
                     Text(playerManager.recording.title)
                         .font(.title2.bold())
                         .foregroundStyle(.white)
@@ -37,8 +38,8 @@ struct PlaybackView: View {
                         .font(.caption)
                         .foregroundStyle(Color.darkSecondary)
                 }
-                .padding(.top, 16)
-                .padding(.bottom, 8)
+//                .padding(.top, 16)
+//                .padding(.bottom, 8)
 
                 PlaybackProgressView(playerManager: playerManager)
                 PlaybackControlsView(playerManager: playerManager)
@@ -84,6 +85,7 @@ struct PlaybackView: View {
                         showRenameBookmarkAlert = true
                     },
                     onAddBookmark: {
+                        pendingBookmarkTimestamp = playerManager.currentTime
                         newBookmarkTitle = ""
                         showAddBookmarkAlert = true
                     }
@@ -136,8 +138,8 @@ struct PlaybackView: View {
             TextField("tag_placeholder", text: $newBookmarkTitle)
                 .autocorrectionDisabled(true)
                 .textInputAutocapitalization(.never)
-                Button("tag_save") {
-                recorder.addBookmark(to: playerManager.recording.id, title: newBookmarkTitle, timestamp: playerManager.currentTime)
+            Button("tag_save") {
+                recorder.addBookmark(to: playerManager.recording.id, title: newBookmarkTitle, timestamp: pendingBookmarkTimestamp)
                 playerManager.refreshRecording(from: recorder)
             }
             Button("tag_cancel", role: .cancel) {}

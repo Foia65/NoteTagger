@@ -4,6 +4,7 @@ struct RecordView: View {
     @EnvironmentObject var recorder: AudioRecorderManager
     @State private var showTagSheet = false
     @State private var tagText = ""
+    @State private var pendingBookmarkTimestamp: TimeInterval = 0
 
     var body: some View {
         NavigationStack {
@@ -26,6 +27,7 @@ struct RecordView: View {
                     if recorder.state == .recording {
                         VStack(spacing: 24) {
                             Button {
+                                pendingBookmarkTimestamp = recorder.currentTime
                                 tagText = ""
                                 showTagSheet = true
                             } label: {
@@ -90,7 +92,7 @@ struct RecordView: View {
             .alert("tag_alert_title", isPresented: $showTagSheet) {
                 TextField("tag_placeholder", text: $tagText)
                 Button("tag_save") {
-                    recorder.addBookmark(title: tagText)
+                    recorder.addBookmark(title: tagText, timestamp: pendingBookmarkTimestamp)
                 }
                 Button("tag_cancel", role: .cancel) {}
             } message: {
